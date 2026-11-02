@@ -1,121 +1,102 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [agora, setAgora] = useState(new Date())
+
+  // Data final: 17 de dezembro de 2026,
+  // até o último segundo do dia.
+  const dataFinal = new Date(2026, 11, 18, 0, 0, 0)
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setAgora(new Date())
+    }, 1000)
+
+    return () => clearInterval(intervalo)
+  }, [])
+
+  const diferenca = Math.max(0, dataFinal - agora)
+
+  const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24))
+  const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24)
+  const minutos = Math.floor((diferenca / (1000 * 60)) % 60)
+  const segundos = Math.floor((diferenca / 1000) % 60)
+
+  const contador = [
+    { valor: dias, nome: 'DIAS' },
+    { valor: horas, nome: 'HORAS' },
+    { valor: minutos, nome: 'MINUTOS' },
+    { valor: segundos, nome: 'SEGUNDOS' }
+  ]
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <main className="pagina">
+      <header className="cabecalho">
+        <div className="logo">
+          <span>✦</span> COUNTDOWN
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        <div className="status">
+          <span className="bolinha"></span>
+          CONTAGEM REGRESSIVA
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+      </header>
+
+      <section className="conteudo">
+        <div className="estrela">✦</div>
+
+        <p className="subtitulo">
+          UM CICLO ESTÁ CHEGANDO AO FIM
+        </p>
+
+        <h1>
+          O semestre está
+          <br />
+          <span>chegando ao fim.</span>
+        </h1>
+
+        <p className="descricao">
+          Cada segundo nos aproxima de mais uma conquista.
+          <br />
+          A contagem regressiva começou!
+        </p>
+
+        <div className="data-card">
+          <span className="calendario">◷</span>
+          17 DE DEZEMBRO DE 2026
+        </div>
+
+        {diferenca > 0 ? (
+          <div className="contador">
+            {contador.map((item) => (
+              <div className="bloco-tempo" key={item.nome}>
+                <div className="numero">
+                  {String(item.valor).padStart(2, '0')}
+                </div>
+                <span className="legenda">{item.nome}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mensagem-final">
+            Chegou o grande dia! ✨
+          </div>
+        )}
+
+        <div className="mensagem">
+          <span>✧</span>
+          O fim de um semestre, o começo de novas possibilidades.
+          <span>✧</span>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <footer className="rodape">
+        FEITO PARA CELEBRAR CADA CONQUISTA
+        <span> • 2026</span>
+      </footer>
+    </main>
   )
 }
 
